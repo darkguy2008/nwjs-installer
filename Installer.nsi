@@ -1,12 +1,12 @@
 !define APPNAME "NWJS Runtime"
-!define COMPANYNAME "DARKGuy / Alemar Osorio"
+!define COMPANYNAME "DARKGuy / Alemar"
 !define DESCRIPTION "NWJS Runtime"
 
 !define VERSIONMAJOR 0
 !define VERSIONMINOR 12
 !define VERSIONBUILD 3
 
-!define INSTALLSIZE 1
+!define INSTALLSIZE 88774
 
 RequestExecutionLevel admin
 
@@ -15,7 +15,7 @@ InstallDir  "$PROGRAMFILES\NWJS"
 LicenseData "License.txt"
 Name "${APPNAME}"
 Icon "Installer.ico"
-outFile "..\Website\Files\${APPNAME} ${VERSIONMAJOR}.${VERSIONMINOR}.${VERSIONBUILD} Setup.exe"
+outFile "${APPNAME} ${VERSIONMAJOR}.${VERSIONMINOR}.${VERSIONBUILD} Setup.exe"
 
 !include LogicLib.nsh
 !include "FileAssociation.nsh"
@@ -51,8 +51,14 @@ functionEnd
 section "install"
 	setOutPath $INSTDIR
 	File /r Files\*
+	File Installer.ico	
 	!insertmacro APP_ASSOCIATE "nw" "nwjs.package" "NW.JS Package File" "$INSTDIR\nw.exe,0" "Run" "$INSTDIR\nw.exe $\"%1$\""
 	writeUninstaller "$INSTDIR\Uninstall.exe"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\NWJSRuntime" "DisplayName" "${APPNAME} ${VERSIONMAJOR}.${VERSIONMINOR}.${VERSIONBUILD}"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\NWJSRuntime" "DisplayIcon" "$\"$INSTDIR\Installer.ico$\""
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\NWJSRuntime" "UninstallString" "$\"$INSTDIR\Uninstall.exe$\""
+	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\NWJSRuntime" "NoModify" 1
+	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\NWJSRuntime" "NoRepair" 1
 sectionEnd
 
 ###########################################################################################
@@ -75,4 +81,5 @@ section "uninstall"
 	Sleep 2500
 	!insertmacro APP_UNASSOCIATE "nw" "nwjs.package"
 	rmDir /r "$INSTDIR\*"
+	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\NWJSRuntime"
 sectionEnd

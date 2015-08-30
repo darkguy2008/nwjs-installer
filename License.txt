@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (c) 2015 DARKGuy
+Copyright (c) 2015 DARKGuy / Alemar
 
 Contact: darkguy2008@gmail.com
 
